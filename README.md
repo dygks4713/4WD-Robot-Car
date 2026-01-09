@@ -62,7 +62,7 @@
    ```bash
    mkdir -p ~/ros2_ws/src
    cd ~/ros2_ws/src
-   git clone [https://github.com/dygks4713/AI-Car_ROS2.git](https://github.com/dygks4713/AI-Car_ROS2.git)
+   git clone https://github.com/dygks4713/4WD-Robot-Car.git
    cd ..
    colcon build --symlink-install
    source install/setup.bash

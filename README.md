@@ -67,75 +67,41 @@
    colcon build --symlink-install
    source install/setup.bash
 
-## 6. 패키지 파일 구조
+## 6. 📂 프로젝트 구조 (Project Tree)
+
+워크스페이스 내의 패키지 구성은 다음과 같습니다.
+
+```text
 .
-├── camera_pkg
-│   ├── camera_pkg
-│   │   ├── camera_node.py
-│   │   └── __init__.py
-│   ├── package.xml
-│   ├── resource
-│   │   └── camera_pkg
-│   ├── setup.cfg
-│   ├── setup.py
-│   └── test
-│       ├── test_copyright.py
-│       ├── test_flake8.py
-│       └── test_pep257.py
-├── camera_view_pkg
-│   ├── camera_view_pkg
-│   │   ├── __init__.py
-│   │   └── view_node.py
-│   ├── package.xml
-│   ├── resource
-│   │   └── camera_view_pkg
-│   ├── setup.cfg
-│   ├── setup.py
-│   └── test
-│       ├── test_copyright.py
-│       ├── test_flake8.py
-│       └── test_pep257.py
-├── my_car_controller
-│   ├── my_car_controller
-│   │   ├── __init__.py
-│   │   └── motor_sub.py
-│   ├── package.xml
-│   ├── resource
-│   │   └── my_car_controller
-│   ├── setup.cfg
-│   ├── setup.py
-│   └── test
-│       ├── test_copyright.py
-│       ├── test_flake8.py
-│       └── test_pep257.py
-└── my_teleop
+├── camera_pkg              # 라즈베리 파이: 카메라 영상 발행 패키지
+│   ├── camera_pkg
+│   │   ├── camera_node.py
+│   │   └── __init__.py
+│   └── ...
+├── camera_view_pkg         # 원격 PC: 영상 수신 및 화면 출력 패키지
+│   ├── camera_view_pkg
+│   │   ├── view_node.py
+│   │   └── __init__.py
+│   └── ...
+├── my_car_controller       # 라즈베리 파이: 모터 드라이버 제어 패키지
+│   ├── my_car_controller
+│   │   ├── motor_sub.py
+│   │   └── __init__.py
+│   └── ...
+└── my_teleop               # 원격 PC: 키보드 입력 제어기 패키지
     ├── my_teleop
-    │   ├── __init__.py
-    │   └── teleop_node.py
-    ├── package.xml
-    ├── resource
-    │   └── my_teleop
-    ├── setup.cfg
-    ├── setup.py
-    └── test
-        ├── test_copyright.py
-        ├── test_flake8.py
-        └── test_pep257.py
-
-# 🏎️ ROS2 원격 제어 RC 카 프로젝트
-
-라즈베리 파이와 PC(가상 머신) 간의 통신을 이용한 실시간 영상 스트리밍 및 모터 제어 시스템입니다.
-
----
+    │   ├── teleop_node.py
+    │   └── __init__.py
+    └── ...
 
 ## 📂 패키지 정보 (Package Summary)
 
-| 패키지명 | 실행 환경 | 주요 역할 | 핵심 기술 |
-| :--- | :---: | :--- | :--- |
-| **camera_pkg** | Raspberry Pi | 실시간 영상 발행 | OpenCV, CvBridge, V4L2 |
-| **camera_view_pkg** | PC (Ubuntu) | 영상 수신 및 출력 | OpenCV GUI, CvBridge |
-| **my_teleop** | PC (Ubuntu) | 키보드 제어 명령 발행 | geometry_msgs/Twist |
-| **my_car_controller** | Raspberry Pi | 모터 드라이버 제어 | RPi.GPIO, Subscriber |
+| 패키지명 | 실행 환경 | 주요 역할 | 주요 노드 | 핵심 기술 |
+| :--- | :---: | :--- | :--- | :--- |
+| **camera_pkg** | Raspberry Pi | 실시간 영상 발행 | camera_node.py | OpenCV, CvBridge, V4L2 |
+| **camera_view_pkg** | PC (Ubuntu) | 영상 수신 및 출력 | view_node.py | OpenCV GUI, CvBridge |
+| **my_teleop** | PC (Ubuntu) | 키보드 제어 명령 발행 | teleop_node.py | geometry_msgs/Twist |
+| **my_car_controller** | Raspberry Pi | 모터 드라이버 제어 | motor_sub.py | RPi.GPIO, Subscriber |
 
 ---
 

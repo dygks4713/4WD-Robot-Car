@@ -132,8 +132,6 @@
 > - 가상 머신과 라즈베리 파이는 동일한 핫스팟/공유기 망에 연결되어야 합니다.
 
 - **ROS_DOMAIN_ID**: `30` (통신 채널 일치 필요)
-- **RMW_IMPLEMENTATION**: `rmw_cyclonedds_cpp` (NAT 환경에서 권장)
-
 ---
 
 ## 🚀 실행 방법 (Quick Start)

@@ -66,3 +66,112 @@
    cd ..
    colcon build --symlink-install
    source install/setup.bash
+
+## 6. 패키지 파일 구조
+.
+├── camera_pkg
+│   ├── camera_pkg
+│   │   ├── camera_node.py
+│   │   └── __init__.py
+│   ├── package.xml
+│   ├── resource
+│   │   └── camera_pkg
+│   ├── setup.cfg
+│   ├── setup.py
+│   └── test
+│       ├── test_copyright.py
+│       ├── test_flake8.py
+│       └── test_pep257.py
+├── camera_view_pkg
+│   ├── camera_view_pkg
+│   │   ├── __init__.py
+│   │   └── view_node.py
+│   ├── package.xml
+│   ├── resource
+│   │   └── camera_view_pkg
+│   ├── setup.cfg
+│   ├── setup.py
+│   └── test
+│       ├── test_copyright.py
+│       ├── test_flake8.py
+│       └── test_pep257.py
+├── my_car_controller
+│   ├── my_car_controller
+│   │   ├── __init__.py
+│   │   └── motor_sub.py
+│   ├── package.xml
+│   ├── resource
+│   │   └── my_car_controller
+│   ├── setup.cfg
+│   ├── setup.py
+│   └── test
+│       ├── test_copyright.py
+│       ├── test_flake8.py
+│       └── test_pep257.py
+└── my_teleop
+    ├── my_teleop
+    │   ├── __init__.py
+    │   └── teleop_node.py
+    ├── package.xml
+    ├── resource
+    │   └── my_teleop
+    ├── setup.cfg
+    ├── setup.py
+    └── test
+        ├── test_copyright.py
+        ├── test_flake8.py
+        └── test_pep257.py
+
+# 🏎️ ROS2 원격 제어 RC 카 프로젝트
+
+라즈베리 파이와 PC(가상 머신) 간의 통신을 이용한 실시간 영상 스트리밍 및 모터 제어 시스템입니다.
+
+---
+
+## 📂 패키지 정보 (Package Summary)
+
+| 패키지명 | 실행 환경 | 주요 역할 | 핵심 기술 |
+| :--- | :---: | :--- | :--- |
+| **camera_pkg** | Raspberry Pi | 실시간 영상 발행 | OpenCV, CvBridge, V4L2 |
+| **camera_view_pkg** | PC (Ubuntu) | 영상 수신 및 출력 | OpenCV GUI, CvBridge |
+| **my_teleop** | PC (Ubuntu) | 키보드 제어 명령 발행 | geometry_msgs/Twist |
+| **my_car_controller** | Raspberry Pi | 모터 드라이버 제어 | RPi.GPIO, Subscriber |
+
+---
+
+## 🛠️ 상세 설명
+
+### 1. camera_pkg
+- **목적**: 로봇의 시각 데이터를 네트워크로 전송합니다.
+- **설정**: 2.2A 배터리 환경을 고려하여 **320x240 해상도**와 **20 FPS**로 최적화되었습니다.
+- **노드**: `camera_node.py`
+
+### 2. camera_view_pkg
+- **목적**: 수신된 데이터를 사용자 화면에 팝업합니다.
+- **기능**: 'q' 키를 눌러 안전하게 창을 닫고 노드를 종료할 수 있습니다.
+- **노드**: `view_node.py`
+
+### 3. my_teleop & my_car_controller
+- **원격 조작**: PC에서 보낸 속도 명령(`cmd_vel`)을 라즈베리 파이가 구독하여 실제 바퀴를 구동합니다.
+- **통신 방식**: ROS2의 Standard 메시지 형식을 준수합니다.
+
+---
+
+## 📡 네트워크 및 환경 설정
+
+> [!IMPORTANT]
+> **VirtualBox 네트워크 설정**
+> - 반드시 **어댑터에 브리지(Bridged Adapter)** 모드를 사용해야 합니다.
+> - 가상 머신과 라즈베리 파이는 동일한 핫스팟/공유기 망에 연결되어야 합니다.
+
+- **ROS_DOMAIN_ID**: `30` (통신 채널 일치 필요)
+- **RMW_IMPLEMENTATION**: `rmw_cyclonedds_cpp` (NAT 환경에서 권장)
+
+---
+
+## 🚀 실행 방법 (Quick Start)
+
+**라즈베리 파이 (SBC)**
+```bash
+ros2 run camera_pkg camera_node
+ros2 run my_car_controller motor_sub
